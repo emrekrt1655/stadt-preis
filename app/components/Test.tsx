@@ -15,6 +15,9 @@ const { data: counries, isLoading: isCountriesLoading, isError: isCountriesError
   if (isCountriesLoading) return <div>Loading cities...</div>;
   if (isCountriesError) return <div>Error loading cities.</div>;
 
+  console.log(cities);
+  console.log(counries);
+
   return (
     <>
     <ul className="max-w-md mx-auto space-y-4 mb-8">
