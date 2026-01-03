@@ -1,32 +1,89 @@
+import { City } from "@/types/City";
 import { supabase } from "./client";
 
-export async function getCities(langCode: string) {
-  const { data: language, error: langError } = await supabase
-    .from("languages")
-    .select("id")
-    .eq("code", langCode)
-    .single();
+export async function getCitiesByCountry(
+  countryCode: string,
+  langCode: string
+) {
+  const { data, error } = await supabase
+    .from("city_translations")
+    .select(`
+      name,
+      cities!inner (
+        id,
+        lat,
+        lng,
+        plate_code,
+        countries!inner (
+          code
+        )
+      ),
+      languages!inner (
+        code
+      )
+    `)
+    .eq("cities.countries.code", countryCode)
+    .eq("languages.code", langCode);
 
-  if (langError || !language) throw new Error("Language not found");
-
-  const { data: countries, error: countriesError } = await supabase
-    .from("countries")
-    .select("code")
-    .eq("language_id", language.id)
-    .eq("code", "DE");
-
-  if (countriesError || !countries || countries.length === 0) {
-    throw new Error("Country not found for the specified language");
+  if (error) {
+    console.error("Supabase error:", error);
+    throw new Error(`Failed to fetch cities: ${error.message}`);
   }
 
-  const { data: cities, error: cityError } = await supabase
-    .from("cities")
-    .select("name, lat, lng")
-    .eq("language_id", language.id)
-    .eq("country_code", countries[0].code)
-    .order("name", { ascending: true });
+  if (!data?.length) {
+    throw new Error(`No cities found for ${countryCode} in ${langCode}`);
+  }
 
-  if (cityError) throw cityError;
+  console.log("Fetched cities data:", data);
 
-  return cities;
+  return data.map((item: any) => ({
+    name: item.name,
+    id: item.cities.id,
+    lat: parseFloat(item.cities.lat),
+    lng: parseFloat(item.cities.lng),
+    plateCode: item.cities.plate_code,
+  })) as City[];
+}
+
+export async function getCitiesByState(
+  stateId: string,
+  langCode: string
+) {
+  const { data, error } = await supabase
+    .from("city_translations")
+    .select(`
+      name,
+      cities!inner (
+        id,
+        lat,
+        lng,
+        plate_code,
+        states!inner (
+          id
+        )
+      ),
+      languages!inner (
+        code
+      )
+    `)
+    .eq("cities.states.id", stateId)
+    .eq("languages.code", langCode);
+
+  if (error) {
+    console.error("Supabase error:", error);
+    throw new Error(`Failed to fetch cities: ${error.message}`);
+  }
+
+  if (!data?.length) {
+    throw new Error(`No cities found for state ${stateId} in ${langCode}`);
+  }
+
+
+  return data.map((item: any) => ({
+    name: item.name,
+    id: item.cities.id,
+    lat: parseFloat(item.cities.lat),
+    lng: parseFloat(item.cities.lng),
+    plateCode: item.cities.plate_code,
+  })) as City[];
 }

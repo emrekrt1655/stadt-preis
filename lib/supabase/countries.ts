@@ -1,22 +1,39 @@
+import { Country } from "@/types/Country";
 import { supabase } from "./client";
 
 export async function getCountries(langCode: string) {
-  const { data: language, error: langError } = await supabase
-    .from("languages")
-    .select("id")
-    .eq("code", langCode)
-    .single();
+  const { data, error } = await supabase
+    .from("country_translations")
+    .select(
+      `
+      name,
+      countries!inner (
+        id,
+        code,
+        iso3,
+        continent
+      ),
+      languages!inner (
+        code
+      )
+    `
+    )
+    .eq("languages.code", langCode);
 
-  if (langError || !language) throw new Error("Language not found");
-
-  const { data: countries, error: countriesError } = await supabase
-    .from("countries")
-    .select("name, code")
-    .eq("language_id", language.id)
-
-  if (countriesError || !countries || countries.length === 0) {
-    throw new Error("Country not found for the specified language");
+  if (error) {
+    throw new Error(`Failed to fetch countries: ${error.message}`);
   }
-    return countries;
 
+  if (!data || data.length === 0) {
+    throw new Error(`No countries found for language: ${langCode}`);
+  }
+  const countries = data.map((item: any) => ({
+    name: item.name,
+    code: item.countries.code,
+    iso3: item.countries.iso3,
+    continent: item.countries.continent,
+    langCode: item.languages.code,
+  })) as Country[];
+
+  return countries;
 }

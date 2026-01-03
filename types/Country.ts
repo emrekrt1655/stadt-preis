@@ -1,4 +1,8 @@
 export type Country = {
-    name: string;
-    code: string;
-}
+  id: string;
+  name: string;
+  code: string;
+  iso3: string;
+  continent: string;
+  langCode: string;
+};

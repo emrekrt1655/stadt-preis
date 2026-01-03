@@ -1,16 +1,16 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { getCitiesByCountry, getCitiesByState } from "@/lib/supabase/cities";
 import { toast } from "sonner";
-import { getCities } from "@/lib/supabase/cities";
 import { City } from "@/types/City";
 
-export const useCities = (langCode: string) => {
-  const query = useQuery<City[], Error>({
-    queryKey: ["cities", langCode],
+export const useCitiesByCountry = (countryCode: string, langCode: string) => {
+  return useQuery<City[]>({
+    queryKey: ["citiesByCountry", countryCode, langCode],
     queryFn: async (): Promise<City[]> => {
       try {
-        return await getCities(langCode);
+        return await getCitiesByCountry(countryCode, langCode);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "Failed to load cities";
@@ -19,7 +19,24 @@ export const useCities = (langCode: string) => {
       }
     },
     retry: 1,
+    enabled: !!countryCode && !!langCode,
   });
+};
 
-  return query;
+export const useCitiesByState = (stateId: string, langCode: string) => {
+  return useQuery<City[]>({
+    queryKey: ["citiesByState", stateId, langCode],
+    queryFn: async (): Promise<City[]> => {
+      try {
+        return await getCitiesByState(stateId, langCode);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Failed to load cities";
+        toast.error(errorMessage);
+        throw error;
+      }
+    },
+    retry: 1,
+    enabled: !!stateId && !!langCode,
+  });
 };
