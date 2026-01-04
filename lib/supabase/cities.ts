@@ -26,19 +26,17 @@ export async function getCitiesByCountry(
     .eq("languages.code", langCode);
 
   if (error) {
-    console.error("Supabase error:", error);
     throw new Error(`Failed to fetch cities: ${error.message}`);
   }
 
-  if (!data?.length) {
+  if (!data || data.length === 0) {
     throw new Error(`No cities found for ${countryCode} in ${langCode}`);
   }
 
-  console.log("Fetched cities data:", data);
 
   return data.map((item: any) => ({
     name: item.name,
-    id: item.cities.id,
+    cityId: item.cities.id,
     lat: parseFloat(item.cities.lat),
     lng: parseFloat(item.cities.lng),
     plateCode: item.cities.plate_code,
@@ -81,7 +79,7 @@ export async function getCitiesByState(
 
   return data.map((item: any) => ({
     name: item.name,
-    id: item.cities.id,
+    cityId: item.cities.id,
     lat: parseFloat(item.cities.lat),
     lng: parseFloat(item.cities.lng),
     plateCode: item.cities.plate_code,

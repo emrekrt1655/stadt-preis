@@ -1,6 +1,6 @@
 export type City = {
   name: string;
-  id: string;
+  cityId: string;
   lat: number;
   lng: number;
   plateCode: string;

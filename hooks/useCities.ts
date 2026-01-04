@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { City } from "@/types/City";
 
 export const useCitiesByCountry = (countryCode: string, langCode: string) => {
-  return useQuery<City[]>({
+  return useQuery<City[], Error>({
     queryKey: ["citiesByCountry", countryCode, langCode],
     queryFn: async (): Promise<City[]> => {
       try {
@@ -24,7 +24,7 @@ export const useCitiesByCountry = (countryCode: string, langCode: string) => {
 };
 
 export const useCitiesByState = (stateId: string, langCode: string) => {
-  return useQuery<City[]>({
+  return useQuery<City[], Error>({
     queryKey: ["citiesByState", stateId, langCode],
     queryFn: async (): Promise<City[]> => {
       try {

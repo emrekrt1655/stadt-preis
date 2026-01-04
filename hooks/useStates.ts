@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { State } from "@/types/State";
 
 export const useStates = (countryCode: string, langCode: string) => {
-  const query = useQuery<State[]>({
+  return useQuery<State[], Error>({
     queryKey: ["states", countryCode, langCode],
     queryFn: async (): Promise<State[]> => {
       try {
@@ -21,11 +21,4 @@ export const useStates = (countryCode: string, langCode: string) => {
     retry: 1,
     enabled: !!countryCode && !!langCode,
   });
-
-  // DEBUG
-  if (query.isError) {
-    console.error("Query error:", query.error);
-  }
-
-  return query;
 };
