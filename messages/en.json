@@ -1,4 +1,21 @@
 {
-    "hello": "Hello",
-    "welcome": "Welcome to City-Price"
+  "hero": {
+    "title": "Explore city-based prices across Germany",
+    "subtitle": "View real-life cost data for each city and contribute anonymously with your own entries.",
+    "points": [
+      "💡 Discover real prices collected from local users.",
+      "🤝 Contribute anonymously to make price data more accurate.",
+      "📈 Compare living costs across German cities and track trends."
+    ]
+  },
+  "stateInfo": {
+    "title": "Germany Map Guide",
+    "howItWorks": "How it works",
+    "description": "Select a state on the map to continue. The state’s city map will open, where you can view price data or anonymously add new entries.",
+    "steps": [
+      "🗺️ Click on the map to select a state.",
+      "🏙️ View real and anonymous price data on the city detail page.",
+      "📈 Share your own price data anonymously."
+    ]
+  }
 }
