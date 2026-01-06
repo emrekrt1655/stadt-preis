@@ -17,5 +17,22 @@
       "🏙️ Sehen Sie sich reale und anonyme Preisdaten auf der Stadtdetailseite an.",
       "📈 Teilen Sie Ihre eigenen Preisdaten anonym."
     ]
+  },
+  "stateDetail": {
+    "title": "Bundesstaat Details",
+    "subtitle": "Name des Bundesstaates:",
+    "selectedCityName": "Ausgewählte Stadt: {cityName}",
+    "selectedCityPopulation": "Bevölkerung: {population}",
+    "selectedCityArea": "Fläche: {area} km²",
+    "statistics": "Statistiken",
+    "generalPopulation": "Gesamtbevölkerung",
+    "generalArea": "Gesamtfläche (km²)",
+    "generalDestiny": "Bevölkerungsdichte (Personen/km²)",
+    "countOfCities": "Anzahl der Städte",
+    "placeholder": {
+      "search": "Stadt suchen..."
+    },
+    "noResults": "Keine Ergebnisse gefunden",
+    "loadError": "Karten-Daten konnten nicht geladen werden. Konsole überprüfen."
   }
 }

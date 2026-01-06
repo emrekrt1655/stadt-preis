@@ -56,7 +56,7 @@ export default function Hero() {
           <StateInfoPanel />
         </div>
         <div className="flex-1 w-full">
-          <GermanyMap states={states!} />
+          <GermanyMap locale={locale} states={states!} />
         </div>
       </div>
     </section>

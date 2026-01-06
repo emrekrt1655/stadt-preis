@@ -17,5 +17,22 @@
       "🏙️ View real and anonymous price data on the city detail page.",
       "📈 Share your own price data anonymously."
     ]
+  },
+  "stateDetail": {
+    "title": "State Details",
+    "subtitle": "State Name:",
+    "selectedCityName": "Selected City: {cityName}",
+    "selectedCityPopulation": "Population: {population}",
+    "selectedCityArea": "Area: {area} km²",
+    "statistics": "Statistics",
+    "generalPopulation": "Total Population",
+    "generalArea": "Total Area (km²)",
+    "generalDestiny": "Population Density (people/km²)",
+    "countOfCities": "Number of Cities",
+    "placeholder": {
+      "search": "Search city..."
+    },
+    "noResults": "No results found",
+    "loadError": "Failed to load map data. Check console."
   }
 }

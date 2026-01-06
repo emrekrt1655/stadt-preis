@@ -8,9 +8,11 @@ import { useRouter } from "next/navigation";
 import { useSelectedState } from "@/hooks/useSelectedState";
 import { State } from "@/types/State";
 import { toast } from "sonner";
+import { usePathname } from "next/navigation";
 
 type GermanyMapProps = {
   states: State[];
+  locale: string;
 };
 
 type Feature = {
@@ -26,7 +28,9 @@ type Feature = {
   };
 };
 
-export default function GermanyMap({ states }: GermanyMapProps) {
+export default function GermanyMap({ states, locale }: GermanyMapProps) {
+  const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1] || "en";
   const [features, setFeatures] = useState<Feature[]>([]);
   const [error, setError] = useState(false);
   const router = useRouter();
@@ -61,6 +65,11 @@ export default function GermanyMap({ states }: GermanyMapProps) {
 
   const path = d3.geoPath().projection(projection);
 
+  const handleStateClick = (stateId: string) => {
+    setSelectedStateId(stateId);
+    router.push(`/${currentLocale}/${stateId}`);
+  };
+
   return (
     <Card className="w-full max-w-4xl mx-auto mt-6 p-4 shadow-md">
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto">
@@ -73,7 +82,7 @@ export default function GermanyMap({ states }: GermanyMapProps) {
           );
           if (!matchedState) return null;
 
-          const { name, code, stateId } = matchedState;
+          const { name: stateName, code, stateId } = matchedState;
 
           const [x, y] = path.centroid(feature as any);
 
@@ -82,23 +91,23 @@ export default function GermanyMap({ states }: GermanyMapProps) {
           const heightFeature = bounds[1][1] - bounds[0][1];
           const fontSize = Math.min(
             12,
-            Math.max(6, (widthFeature / (name.length + code.length)) * 1.5)
+            Math.max(6, (widthFeature / (stateName.length + code.length)) * 1.5)
           );
 
           const showText = widthFeature > 15 && heightFeature > 10;
 
           return (
-            <g key={i} className="cursor-pointer">
+            <g
+              key={i}
+              className="cursor-pointer"
+              onClick={() => handleStateClick(stateId)}
+            >
               <path
                 d={d}
                 className="fill-slate-100 stroke-gray-500 hover:fill-blue-400 hover:stroke-blue-600 transition-all duration-200"
-                onClick={() => {
-                  setSelectedStateId(stateId);
-                  router.push(`/${name}/${stateId}`);
-                }}
               >
                 <title>
-                  {name} | {code}
+                  {stateName} | {code}
                 </title>
               </path>
 
@@ -111,7 +120,7 @@ export default function GermanyMap({ states }: GermanyMapProps) {
                   fontSize={fontSize}
                   className="fill-gray-800 font-medium pointer-events-none select-none"
                 >
-                  {name} | {code}
+                  {stateName} | {code}
                 </text>
               )}
             </g>

@@ -8,7 +8,7 @@
       "📈 Şehirler arası fiyat farklarını keşfedin ve trendleri görün."
     ]
   },
-   "stateInfo": {
+  "stateInfo": {
     "title": "Almanya Harita Rehberi",
     "howItWorks": "Nasıl çalışır?",
     "steps": [
@@ -16,5 +16,22 @@
       "🏙️ Şehir detay sayfasında fiyat verilerini inceleyin.",
       "📈 Kendi fiyat verinizi anonim olarak paylaşabilirsiniz."
     ]
+  },
+  "stateDetail": {
+    "title": "Eyalet Detayları",
+    "subtitle": "Eyalet Adı:",
+    "selectedCityName": "Seçilen Şehir: {cityName}",
+    "selectedCityPopulation": "Nüfus: {population}",
+    "selectedCityArea": "Alan: {area} km²",
+    "statistics": "İstatistikler",
+    "generalPopulation": "Toplam Nüfus",
+    "generalArea": "Toplam Alan (km²)",
+    "generalDestiny": "Nüfus Yoğunluğu (kişi/km²)",
+    "countOfCities": "Bölge Sayısı",
+    "placeholder": {
+      "search": "Şehir ara..."
+    },
+    "noResults": "Sonuç bulunamadı",
+    "loadError": "Harita verisi yüklenemedi. Konsolu kontrol et."
   }
 }
