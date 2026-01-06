@@ -128,7 +128,7 @@ export default function Test() {
           <ul className="space-y-2">
             {citiesToDisplay.map((city) => (
               <li
-                key={city.id}
+                key={city.cityId}
                 className="p-4 border border-gray-300 rounded-lg shadow-sm"
               >
                 <h3 className="text-lg font-semibold">{city.name}</h3>

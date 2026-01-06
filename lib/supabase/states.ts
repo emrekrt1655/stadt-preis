@@ -23,11 +23,10 @@ export async function getStates(countryCode: string, langCode: string) {
     .eq("languages.code", langCode);
 
   if (error) {
-    console.error("Supabase error:", error);
     throw new Error(`Failed to fetch states: ${error.message}`);
   }
 
-  if (!data?.length) {
+  if (!data || data.length === 0) {
     throw new Error(`No states found for ${countryCode} in ${langCode}`);
   }
 
