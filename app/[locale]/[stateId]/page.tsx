@@ -146,7 +146,6 @@ export default function StateDetailPage() {
                 </div>
               </div>
 
-              {/* Arama Önerileri */}
               {showSuggestions && suggestions.length > 0 && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
                   {suggestions.map((feature, i) => (
@@ -166,7 +165,6 @@ export default function StateDetailPage() {
                 </div>
               )}
 
-              {/* Sonuç bulunamadı */}
               {showSuggestions && suggestions.length === 0 && searchQuery && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 p-4 text-center text-gray-500">
                   {t("noResults", { defaultValue: "Sonuç bulunamadı" })}
@@ -174,7 +172,6 @@ export default function StateDetailPage() {
               )}
             </div>
 
-            {/* Seçili Şehir Kartı */}
             {selectedFeature && (
               <Card className="p-4 bg-blue-50 border border-blue-200">
                 <div className="flex justify-between items-start">
@@ -215,7 +212,6 @@ export default function StateDetailPage() {
               </Card>
             )}
 
-            {/* Genel Eyalet İstatistikleri */}
             {loading ? (
               <Card className="p-6 flex justify-center items-center min-h-48">
                 <Loader2 className="animate-spin text-primary w-8 h-8" />
@@ -270,7 +266,6 @@ export default function StateDetailPage() {
             )}
           </div>
 
-          {/* Harita Alanı */}
           <div className="lg:col-span-2">
             <StateMap selectedFeature={selectedFeature} />
           </div>
