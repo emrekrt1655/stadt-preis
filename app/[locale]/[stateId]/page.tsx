@@ -233,7 +233,7 @@ export default function StateDetailPage() {
                   <div className="bg-green-50 p-4 rounded-lg">
                     <p className="text-sm text-gray-600">{t("generalArea")}</p>
                     <p className="text-2xl font-bold text-green-600">
-                      {stateData.totalArea.toFixed(0)} km²
+                      {stateData.totalArea.toFixed(0)} 
                     </p>
                   </div>
                   <div className="bg-purple-50 p-4 rounded-lg">
@@ -241,7 +241,7 @@ export default function StateDetailPage() {
                       {t("generalDestiny")}
                     </p>
                     <p className="text-2xl font-bold text-purple-600">
-                      {stateData.populationDensity} kişi/km²
+                      {stateData.populationDensity} 
                     </p>
                   </div>
                   <div className="bg-orange-50 p-4 rounded-lg">
