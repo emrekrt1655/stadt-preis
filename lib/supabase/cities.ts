@@ -1,87 +1,82 @@
 import { City } from "@/types/City";
 import { supabase } from "./client";
 
-export async function getCitiesByCountry(
-  countryCode: string,
-  langCode: string
-) {
-  const { data, error } = await supabase
-    .from("city_translations")
-    .select(`
-      name,
-      cities!inner (
-        id,
-        lat,
-        lng,
-        plate_code,
-        countries!inner (
-          code
-        )
-      ),
-      languages!inner (
-        code
-      )
-    `)
-    .eq("cities.countries.code", countryCode)
-    .eq("languages.code", langCode);
+const CITY_SELECT_QUERY = `
+  id,
+  name,
+  zip_code,
+  population,
+  area,
+  population_density,
+  center_lat,
+  center_lon,
+  state_id,
+  country_id,
+  states (
+    id,
+    code
+  ),
+  countries (
+    id,
+    code
+  )
+`;
 
-  if (error) {
-    throw new Error(`Failed to fetch cities: ${error.message}`);
-  }
-
-  if (!data || data.length === 0) {
-    throw new Error(`No cities found for ${countryCode} in ${langCode}`);
-  }
-
-
-  return data.map((item: any) => ({
+function mapCityData(item: any): City {
+  return {
+    id: item.id,
     name: item.name,
-    cityId: item.cities.id,
-    lat: parseFloat(item.cities.lat),
-    lng: parseFloat(item.cities.lng),
-    plateCode: item.cities.plate_code,
-  })) as City[];
+    zipCode: item.zip_code,
+    population: item.population,
+    area: item.area,
+    populationDensity: item.population_density,
+    lat: item.center_lat,
+    lng: item.center_lon,
+    stateId: item.state_id,
+    countryId: item.country_id,
+    state: item.states,
+    country: item.countries,
+  };
 }
 
-export async function getCitiesByState(
-  stateId: string,
-  langCode: string
-) {
-  const { data, error } = await supabase
-    .from("city_translations")
-    .select(`
-      name,
-      cities!inner (
-        id,
-        lat,
-        lng,
-        plate_code,
-        states!inner (
-          id
-        )
-      ),
-      languages!inner (
-        code
-      )
-    `)
-    .eq("cities.states.id", stateId)
-    .eq("languages.code", langCode);
+async function fetchCities(
+  filterKey: string,
+  filterValue: string,
+  isSingle = false
+): Promise<City | City[]> {
+  let query = supabase.from("cities").select(CITY_SELECT_QUERY);
+
+  if (filterKey === "countries.code") {
+    query = query.eq(filterKey, filterValue);
+  } else {
+    query = query.eq(filterKey, filterValue);
+  }
+
+  const { data, error } = isSingle 
+    ? await query.single() 
+    : await query;
 
   if (error) {
-    console.error("Supabase error:", error);
-    throw new Error(`Failed to fetch cities: ${error.message}`);
+    throw new Error(`Failed to fetch city/cities: ${error.message}`);
   }
 
-  if (!data?.length) {
-    throw new Error(`No cities found for state ${stateId} in ${langCode}`);
+  if (!data || (Array.isArray(data) && data.length === 0)) {
+    throw new Error(`No cities found for ${filterKey}=${filterValue}`);
   }
 
+  return isSingle 
+    ? mapCityData(data) 
+    : (data as any[]).map(mapCityData);
+}
 
-  return data.map((item: any) => ({
-    name: item.name,
-    cityId: item.cities.id,
-    lat: parseFloat(item.cities.lat),
-    lng: parseFloat(item.cities.lng),
-    plateCode: item.cities.plate_code,
-  })) as City[];
+export async function getCitiesByCountry(countryCode: string): Promise<City[]> {
+  return fetchCities("countries.code", countryCode) as Promise<City[]>;
+}
+
+export async function getCitiesByState(stateId: string): Promise<City[]> {
+  return fetchCities("state_id", stateId) as Promise<City[]>;
+}
+
+export async function getCityById(cityId: string): Promise<City> {
+  return fetchCities("id", cityId, true) as Promise<City>;
 }

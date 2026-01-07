@@ -5,6 +5,7 @@ import * as d3 from "d3-geo";
 import { Card } from "@/app/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Feature = {
   type: "Feature";
@@ -30,6 +31,7 @@ interface StateMapProps {
 }
 
 export default function StateMap({ selectedFeature }: StateMapProps) {
+  const router = useRouter();
   const [features, setFeatures] = useState<Feature[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -54,6 +56,13 @@ export default function StateMap({ selectedFeature }: StateMapProps) {
       })
       .finally(() => setLoading(false));
   }, [stateId]);
+
+   const handleCityClick = (feature: Feature) => {
+    const cityId = feature.properties.RS || feature.properties.AGS;
+    if (cityId) {
+      router.push(`/cities/${cityId}`);
+    }
+  };
 
   if (loading) {
     return (
@@ -117,7 +126,7 @@ export default function StateMap({ selectedFeature }: StateMapProps) {
           const isSelected = selectedFeature?.properties.GEN === name;
 
           return (
-            <g key={i} className="cursor-pointer">
+            <g key={i} className="cursor-pointer" onClick={() => handleCityClick(feature)}>
               <path
                 d={d}
                 className={`stroke-gray-500 transition-all duration-200 ${
