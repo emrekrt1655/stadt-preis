@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getMessages } from "next-intl/server";
 import { ReactQueryProvider } from "../(context)/ReactQueryProvider";
 import { Toaster } from "sonner";
+import Header from "../components/HeaderComponent";
 
 export function generateStaticParams() {
   return [{ locale: "de" }, { locale: "en" }, { locale: "tr" }];
@@ -29,6 +30,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ReactQueryProvider>
+        <Header />
         {children}
         <Toaster position="top-right" richColors />
       </ReactQueryProvider>
