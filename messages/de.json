@@ -1,0 +1,67 @@
+{
+  "hero": {
+    "title": "Erkunden Sie stadtbasierte Preise in ganz Deutschland",
+    "subtitle": "Sehen Sie sich reale Preisdaten für jede Stadt an und tragen Sie anonym Ihre eigenen Daten bei.",
+    "points": [
+      "💡 Entdecken Sie echte Preise, die von lokalen Nutzern geteilt wurden.",
+      "🤝 Tragen Sie anonym bei, um die Preisübersicht zu verbessern.",
+      "📈 Vergleichen Sie Lebenshaltungskosten zwischen Städten und erkennen Sie Trends."
+    ]
+  },
+  "stateInfo": {
+    "title": "Deutschland Kartenführer",
+    "howItWorks": "So funktioniert es",
+    "description": "Wählen Sie einen Bundesstaat auf der Karte aus. Die Stadtkarte des Bundesstaates wird geöffnet, wo Sie Preisdaten anzeigen oder anonym neue Einträge hinzufügen können.",
+    "steps": [
+      "🗺️ Klicken Sie auf die Karte, um einen Bundesstaat auszuwählen.",
+      "🏙️ Sehen Sie sich reale und anonyme Preisdaten auf der Stadtdetailseite an.",
+      "📈 Teilen Sie Ihre eigenen Preisdaten anonym."
+    ]
+  },
+  "stateDetail": {
+    "title": "Bundesstaat Details",
+    "subtitle": "Name des Bundesstaates:",
+    "selectedCityName": "Ausgewählte Stadt: {cityName}",
+    "selectedCityPopulation": "Bevölkerung: {population}",
+    "selectedCityArea": "Fläche: {area} km²",
+    "statistics": "Statistiken",
+    "generalPopulation": "Gesamtbevölkerung",
+    "generalArea": "Gesamtfläche (km²)",
+    "generalDestiny": "Bevölkerungsdichte (Personen/km²)",
+    "countOfCities": "Anzahl der Städte",
+    "placeholder": {
+      "search": "Stadt suchen..."
+    },
+    "noResults": "Keine Ergebnisse gefunden",
+    "loadError": "Karten-Daten konnten nicht geladen werden. Konsole überprüfen."
+  },
+  "CityPage": {
+    "cityNotFound": "Stadt nicht gefunden",
+    "zip": "PLZ",
+    "stats": {
+      "population": "Bevölkerung",
+      "area": "Fläche",
+      "density": "Dichte",
+      "reports": "Berichte"
+    },
+    "categories": {
+      "rent": "Miete",
+      "beer": "Bier",
+      "cappuccino": "Cappuccino",
+      "salary": "Gehalt"
+    },
+    "rentStatistics": "Mietstatistiken",
+    "beerStatistics": "Bierpreis-Statistiken",
+    "cappuccinoStatistics": "Cappuccino-Preis-Statistiken",
+    "salaryStatistics": "Gehaltsstatistiken",
+    "average": "Durchschnitt",
+    "minMax": "Min - Max",
+    "reportsCount": "Berichte",
+    "noDataRent": "Noch keine Mietdaten verfügbar. Seien Sie der Erste!",
+    "noDataBeer": "Noch keine Bierpreise verfügbar. Seien Sie der Erste!",
+    "noDataCappuccino": "Noch keine Cappuccino-Preise verfügbar. Seien Sie der Erste!",
+    "noDataSalary": "Noch keine Gehaltsdaten verfügbar. Seien Sie der Erste!",
+    "rooms": "Zimmer",
+    "yearsExperience": "Jahre Erfahrung"
+  }
+}

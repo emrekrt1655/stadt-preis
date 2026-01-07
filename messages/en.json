@@ -1,0 +1,67 @@
+{
+  "hero": {
+    "title": "Explore city-based prices across Germany",
+    "subtitle": "View real-life cost data for each city and contribute anonymously with your own entries.",
+    "points": [
+      "💡 Discover real prices collected from local users.",
+      "🤝 Contribute anonymously to make price data more accurate.",
+      "📈 Compare living costs across German cities and track trends."
+    ]
+  },
+  "stateInfo": {
+    "title": "Germany Map Guide",
+    "howItWorks": "How it works",
+    "description": "Select a state on the map to continue. The state’s city map will open, where you can view price data or anonymously add new entries.",
+    "steps": [
+      "🗺️ Click on the map to select a state.",
+      "🏙️ View real and anonymous price data on the city detail page.",
+      "📈 Share your own price data anonymously."
+    ]
+  },
+  "stateDetail": {
+    "title": "State Details",
+    "subtitle": "State Name:",
+    "selectedCityName": "Selected City: {cityName}",
+    "selectedCityPopulation": "Population: {population}",
+    "selectedCityArea": "Area: {area} km²",
+    "statistics": "Statistics",
+    "generalPopulation": "Total Population",
+    "generalArea": "Total Area (km²)",
+    "generalDestiny": "Population Density (people/km²)",
+    "countOfCities": "Number of Cities",
+    "placeholder": {
+      "search": "Search city..."
+    },
+    "noResults": "No results found",
+    "loadError": "Failed to load map data. Check console."
+  },
+  "CityPage": {
+    "cityNotFound": "City not found",
+    "zip": "ZIP",
+    "stats": {
+      "population": "Population",
+      "area": "Area",
+      "density": "Density",
+      "reports": "Reports"
+    },
+    "categories": {
+      "rent": "Rent",
+      "beer": "Beer",
+      "cappuccino": "Cappuccino",
+      "salary": "Salary"
+    },
+    "rentStatistics": "Rent Statistics",
+    "beerStatistics": "Beer Price Statistics",
+    "cappuccinoStatistics": "Cappuccino Price Statistics",
+    "salaryStatistics": "Salary Statistics",
+    "average": "Average",
+    "minMax": "Min - Max",
+    "reportsCount": "Reports",
+    "noDataRent": "No rent data available yet. Be the first to add!",
+    "noDataBeer": "No beer price data available yet. Be the first to add!",
+    "noDataCappuccino": "No cappuccino price data available yet. Be the first to add!",
+    "noDataSalary": "No salary data available yet. Be the first to add!",
+    "rooms": "rooms",
+    "yearsExperience": "years experience"
+  }
+}
