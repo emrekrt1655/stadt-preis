@@ -34,5 +34,34 @@
     },
     "noResults": "No results found",
     "loadError": "Failed to load map data. Check console."
+  },
+  "CityPage": {
+    "cityNotFound": "City not found",
+    "zip": "ZIP",
+    "stats": {
+      "population": "Population",
+      "area": "Area",
+      "density": "Density",
+      "reports": "Reports"
+    },
+    "categories": {
+      "rent": "Rent",
+      "beer": "Beer",
+      "cappuccino": "Cappuccino",
+      "salary": "Salary"
+    },
+    "rentStatistics": "Rent Statistics",
+    "beerStatistics": "Beer Price Statistics",
+    "cappuccinoStatistics": "Cappuccino Price Statistics",
+    "salaryStatistics": "Salary Statistics",
+    "average": "Average",
+    "minMax": "Min - Max",
+    "reportsCount": "Reports",
+    "noDataRent": "No rent data available yet. Be the first to add!",
+    "noDataBeer": "No beer price data available yet. Be the first to add!",
+    "noDataCappuccino": "No cappuccino price data available yet. Be the first to add!",
+    "noDataSalary": "No salary data available yet. Be the first to add!",
+    "rooms": "rooms",
+    "yearsExperience": "years experience"
   }
 }

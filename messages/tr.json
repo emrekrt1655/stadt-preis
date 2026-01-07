@@ -33,5 +33,34 @@
     },
     "noResults": "Sonuç bulunamadı",
     "loadError": "Harita verisi yüklenemedi. Konsolu kontrol et."
+  },
+  "CityPage": {
+    "cityNotFound": "Şehir bulunamadı",
+    "zip": "Posta Kodu",
+    "stats": {
+      "population": "Nüfus",
+      "area": "Alan",
+      "density": "Yoğunluk",
+      "reports": "Raporlar"
+    },
+    "categories": {
+      "rent": "Kira",
+      "beer": "Bira",
+      "cappuccino": "Cappuccino",
+      "salary": "Maaş"
+    },
+    "rentStatistics": "Kira İstatistikleri",
+    "beerStatistics": "Bira Fiyat İstatistikleri",
+    "cappuccinoStatistics": "Cappuccino Fiyat İstatistikleri",
+    "salaryStatistics": "Maaş İstatistikleri",
+    "average": "Ortalama",
+    "minMax": "Min - Maks",
+    "reportsCount": "Raporlar",
+    "noDataRent": "Henüz kira verisi yok. İlk ekleyen siz olun!",
+    "noDataBeer": "Henüz bira fiyatı verisi yok. İlk ekleyen siz olun!",
+    "noDataCappuccino": "Henüz cappuccino fiyatı verisi yok. İlk ekleyen siz olun!",
+    "noDataSalary": "Henüz maaş verisi yok. İlk ekleyen siz olun!",
+    "rooms": "oda",
+    "yearsExperience": "yıl deneyim"
   }
 }

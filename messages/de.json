@@ -34,5 +34,34 @@
     },
     "noResults": "Keine Ergebnisse gefunden",
     "loadError": "Karten-Daten konnten nicht geladen werden. Konsole überprüfen."
+  },
+  "CityPage": {
+    "cityNotFound": "Stadt nicht gefunden",
+    "zip": "PLZ",
+    "stats": {
+      "population": "Bevölkerung",
+      "area": "Fläche",
+      "density": "Dichte",
+      "reports": "Berichte"
+    },
+    "categories": {
+      "rent": "Miete",
+      "beer": "Bier",
+      "cappuccino": "Cappuccino",
+      "salary": "Gehalt"
+    },
+    "rentStatistics": "Mietstatistiken",
+    "beerStatistics": "Bierpreis-Statistiken",
+    "cappuccinoStatistics": "Cappuccino-Preis-Statistiken",
+    "salaryStatistics": "Gehaltsstatistiken",
+    "average": "Durchschnitt",
+    "minMax": "Min - Max",
+    "reportsCount": "Berichte",
+    "noDataRent": "Noch keine Mietdaten verfügbar. Seien Sie der Erste!",
+    "noDataBeer": "Noch keine Bierpreise verfügbar. Seien Sie der Erste!",
+    "noDataCappuccino": "Noch keine Cappuccino-Preise verfügbar. Seien Sie der Erste!",
+    "noDataSalary": "Noch keine Gehaltsdaten verfügbar. Seien Sie der Erste!",
+    "rooms": "Zimmer",
+    "yearsExperience": "Jahre Erfahrung"
   }
 }
