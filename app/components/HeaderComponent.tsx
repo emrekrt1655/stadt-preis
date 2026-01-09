@@ -5,6 +5,7 @@ import { Button } from "@/app/components/ui/button";
 import { ArrowLeft, Search, Menu } from "lucide-react";
 import { Card } from "@/app/components/ui/card";
 import { Logo } from "./Logo";
+import LocaleSwitcher from "./LocaleSwitcher";
 
 export default function Header() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function Header() {
           {!isHomePage && <Logo backToHome={() => router.push("/")} />}
 
           <div className="flex items-center gap-2">
+            <LocaleSwitcher />
             <Button variant="ghost" size="icon" className="hidden">
               <Search className="w-5 h-5" />
             </Button>
