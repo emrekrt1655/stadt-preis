@@ -4,11 +4,13 @@ import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
 import { ArrowLeft, Search, Menu } from "lucide-react";
 import { Card } from "@/app/components/ui/card";
+import { Logo } from "./Logo";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
+  const currentLocale = pathname.split("/")[1];
+  const isHomePage = pathname === `/${currentLocale}`;
 
   return (
     <Card className="w-full rounded-none border-x-0 border-t-0 shadow-sm">
@@ -26,15 +28,11 @@ export default function Header() {
                 <span className="hidden sm:inline">Back</span>
               </Button>
             ) : (
-              <h1 className="text-xl font-bold">Stadt Preis</h1>
+              <Logo />
             )}
           </div>
 
-          {!isHomePage && (
-            <h1 className="text-lg font-semibold hidden md:block">
-              Stadt Preis
-            </h1>
-          )}
+          {!isHomePage && <Logo backToHome={() => router.push("/")} />}
 
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="hidden">
