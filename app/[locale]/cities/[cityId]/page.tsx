@@ -1,12 +1,38 @@
 "use client";
 
 import { useCityById } from "@/hooks/useCities";
-import { usePriceReportsByCity, useAveragePrices } from "@/hooks/usePriceReports";
+import {
+  usePriceReportsByCity,
+  useAveragePrices,
+} from "@/hooks/usePriceReports";
 import { useParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { Loader2, MapPin, Users, Maximize2, Building2, Beer, Coffee, Wallet } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
-import { isRentReport, isBeverageReport, isSalaryReport } from "@/types/PriceReports";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
+import {
+  Loader2,
+  MapPin,
+  Users,
+  Maximize2,
+  Building2,
+  Beer,
+  Coffee,
+  Wallet,
+} from "lucide-react";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/app/components/ui/tabs";
+import {
+  isRentReport,
+  isBeverageReport,
+  isSalaryReport,
+} from "@/types/PriceReports";
 import AddPriceReportForm from "@/app/components/AddPriceReportForm";
 import { useTranslations } from "next-intl";
 
@@ -14,13 +40,16 @@ export default function CityPage() {
   const t = useTranslations("CityPage");
   const params = useParams();
   const cityId = params.cityId as string;
-  
+
   const { data: city, isLoading: cityLoading } = useCityById(cityId);
   const { data: rentReports } = usePriceReportsByCity(cityId, "rent");
   const { data: beerReports } = usePriceReportsByCity(cityId, "beer");
-  const { data: cappuccinoReports } = usePriceReportsByCity(cityId, "cappuccino");
+  const { data: cappuccinoReports } = usePriceReportsByCity(
+    cityId,
+    "cappuccino"
+  );
   const { data: salaryReports } = usePriceReportsByCity(cityId, "salary");
-  
+
   const { data: rentAvg } = useAveragePrices(cityId, "rent");
   const { data: beerAvg } = useAveragePrices(cityId, "beer");
   const { data: cappuccinoAvg } = useAveragePrices(cityId, "cappuccino");
@@ -38,11 +67,15 @@ export default function CityPage() {
     return (
       <div className="container mx-auto p-6">
         <Card className="p-8 text-center">
-          <h1 className="text-2xl font-bold text-red-500">{t("cityNotFound")}</h1>
+          <h1 className="text-2xl font-bold text-red-500">
+            {t("cityNotFound")}
+          </h1>
         </Card>
       </div>
     );
   }
+
+  const stateId = city?.stateId || "";
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -51,7 +84,9 @@ export default function CityPage() {
         <h1 className="text-4xl font-bold">{city.name}</h1>
         <div className="flex items-center gap-2 text-muted-foreground">
           <MapPin className="w-4 h-4" />
-          <span>{t("zip")}: {city.zipCode || "N/A"}</span>
+          <span>
+            {t("zip")}: {city.zipCode || "N/A"}
+          </span>
         </div>
       </div>
 
@@ -59,7 +94,9 @@ export default function CityPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t("stats.population")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("stats.population")}
+            </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -71,7 +108,9 @@ export default function CityPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t("stats.area")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("stats.area")}
+            </CardTitle>
             <Maximize2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -83,7 +122,9 @@ export default function CityPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t("stats.density")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("stats.density")}
+            </CardTitle>
             <Building2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -95,7 +136,9 @@ export default function CityPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t("stats.reports")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("stats.reports")}
+            </CardTitle>
             <MapPin className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -133,7 +176,11 @@ export default function CityPage() {
         {/* Rent Tab */}
         <TabsContent value="rent" className="space-y-4">
           <div className="flex justify-end">
-            <AddPriceReportForm cityId={cityId} defaultCategory="rent" />
+            <AddPriceReportForm
+              stateId={stateId}
+              cityId={cityId}
+              defaultCategory="rent"
+            />
           </div>
 
           <Card>
@@ -144,17 +191,25 @@ export default function CityPage() {
               {rentAvg ? (
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("average")}</p>
-                    <p className="text-2xl font-bold">{rentAvg.average.toFixed(2)}€</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("average")}
+                    </p>
+                    <p className="text-2xl font-bold">
+                      {rentAvg.average.toFixed(2)}€
+                    </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("minMax")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("minMax")}
+                    </p>
                     <p className="text-2xl font-bold">
                       {rentAvg.min}€ - {rentAvg.max}€
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("reportsCount")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("reportsCount")}
+                    </p>
                     <p className="text-2xl font-bold">{rentAvg.count}</p>
                   </div>
                 </div>
@@ -167,13 +222,15 @@ export default function CityPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {rentReports?.map((report) => {
               if (!isRentReport(report)) return null;
-              
+
               return (
                 <Card key={report.id}>
                   <CardContent className="pt-6">
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold">{report.price}€</span>
+                        <span className="text-2xl font-bold">
+                          {report.price}€
+                        </span>
                         <span className="text-sm text-muted-foreground">
                           {report.rentDetails?.rentType}
                         </span>
@@ -181,7 +238,9 @@ export default function CityPage() {
                       {report.rentDetails && (
                         <div className="text-sm space-y-1">
                           {report.rentDetails.roomCount && (
-                            <p>🛏️ {report.rentDetails.roomCount} {t("rooms")}</p>
+                            <p>
+                              🛏️ {report.rentDetails.roomCount} {t("rooms")}
+                            </p>
                           )}
                           {report.rentDetails.squareMeters && (
                             <p>📏 {report.rentDetails.squareMeters}m²</p>
@@ -192,7 +251,9 @@ export default function CityPage() {
                         </div>
                       )}
                       {report.notes && (
-                        <p className="text-sm text-muted-foreground italic">{report.notes}</p>
+                        <p className="text-sm text-muted-foreground italic">
+                          {report.notes}
+                        </p>
                       )}
                     </div>
                   </CardContent>
@@ -205,7 +266,11 @@ export default function CityPage() {
         {/* Beer Tab */}
         <TabsContent value="beer" className="space-y-4">
           <div className="flex justify-end">
-            <AddPriceReportForm cityId={cityId} defaultCategory="beer" />
+            <AddPriceReportForm
+              stateId={stateId}
+              cityId={cityId}
+              defaultCategory="beer"
+            />
           </div>
 
           <Card>
@@ -216,17 +281,25 @@ export default function CityPage() {
               {beerAvg ? (
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("average")}</p>
-                    <p className="text-2xl font-bold">{beerAvg.average.toFixed(2)}€</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("average")}
+                    </p>
+                    <p className="text-2xl font-bold">
+                      {beerAvg.average.toFixed(2)}€
+                    </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("minMax")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("minMax")}
+                    </p>
                     <p className="text-2xl font-bold">
                       {beerAvg.min}€ - {beerAvg.max}€
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("reportsCount")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("reportsCount")}
+                    </p>
                     <p className="text-2xl font-bold">{beerAvg.count}</p>
                   </div>
                 </div>
@@ -239,13 +312,15 @@ export default function CityPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {beerReports?.map((report) => {
               if (!isBeverageReport(report)) return null;
-              
+
               return (
                 <Card key={report.id}>
                   <CardContent className="pt-6">
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold">{report.price}€</span>
+                        <span className="text-2xl font-bold">
+                          {report.price}€
+                        </span>
                       </div>
                       {report.beverageDetails && (
                         <div className="text-sm space-y-1">
@@ -268,7 +343,11 @@ export default function CityPage() {
         {/* Cappuccino Tab */}
         <TabsContent value="cappuccino" className="space-y-4">
           <div className="flex justify-end">
-            <AddPriceReportForm cityId={cityId} defaultCategory="cappuccino" />
+            <AddPriceReportForm
+              stateId={stateId}
+              cityId={cityId}
+              defaultCategory="cappuccino"
+            />
           </div>
 
           <Card>
@@ -279,17 +358,25 @@ export default function CityPage() {
               {cappuccinoAvg ? (
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("average")}</p>
-                    <p className="text-2xl font-bold">{cappuccinoAvg.average.toFixed(2)}€</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("average")}
+                    </p>
+                    <p className="text-2xl font-bold">
+                      {cappuccinoAvg.average.toFixed(2)}€
+                    </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("minMax")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("minMax")}
+                    </p>
                     <p className="text-2xl font-bold">
                       {cappuccinoAvg.min}€ - {cappuccinoAvg.max}€
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("reportsCount")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("reportsCount")}
+                    </p>
                     <p className="text-2xl font-bold">{cappuccinoAvg.count}</p>
                   </div>
                 </div>
@@ -302,16 +389,20 @@ export default function CityPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {cappuccinoReports?.map((report) => {
               if (!isBeverageReport(report)) return null;
-              
+
               return (
                 <Card key={report.id}>
                   <CardContent className="pt-6">
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold">{report.price}€</span>
+                        <span className="text-2xl font-bold">
+                          {report.price}€
+                        </span>
                       </div>
                       {report.beverageDetails?.venueName && (
-                        <p className="text-sm">☕ {report.beverageDetails.venueName}</p>
+                        <p className="text-sm">
+                          ☕ {report.beverageDetails.venueName}
+                        </p>
                       )}
                     </div>
                   </CardContent>
@@ -324,7 +415,11 @@ export default function CityPage() {
         {/* Salary Tab */}
         <TabsContent value="salary" className="space-y-4">
           <div className="flex justify-end">
-            <AddPriceReportForm cityId={cityId} defaultCategory="salary" />
+            <AddPriceReportForm
+              stateId={stateId}
+              cityId={cityId}
+              defaultCategory="salary"
+            />
           </div>
 
           <Card>
@@ -335,17 +430,26 @@ export default function CityPage() {
               {salaryAvg ? (
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("average")}</p>
-                    <p className="text-2xl font-bold">{salaryAvg.average.toLocaleString()}€</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">{t("minMax")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("average")}
+                    </p>
                     <p className="text-2xl font-bold">
-                      {salaryAvg.min.toLocaleString()}€ - {salaryAvg.max.toLocaleString()}€
+                      {salaryAvg.average.toLocaleString()}€
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{t("reportsCount")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("minMax")}
+                    </p>
+                    <p className="text-2xl font-bold">
+                      {salaryAvg.min.toLocaleString()}€ -{" "}
+                      {salaryAvg.max.toLocaleString()}€
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">
+                      {t("reportsCount")}
+                    </p>
                     <p className="text-2xl font-bold">{salaryAvg.count}</p>
                   </div>
                 </div>
@@ -358,13 +462,15 @@ export default function CityPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {salaryReports?.map((report) => {
               if (!isSalaryReport(report)) return null;
-              
+
               return (
                 <Card key={report.id}>
                   <CardContent className="pt-6">
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold">{report.price.toLocaleString()}€</span>
+                        <span className="text-2xl font-bold">
+                          {report.price.toLocaleString()}€
+                        </span>
                         <span className="text-sm text-muted-foreground">
                           {report.salaryDetails?.salaryPeriod}
                         </span>
@@ -378,7 +484,10 @@ export default function CityPage() {
                             <p>🏢 {report.salaryDetails.industry}</p>
                           )}
                           {report.salaryDetails.experienceYears && (
-                            <p>📅 {report.salaryDetails.experienceYears} {t("yearsExperience")}</p>
+                            <p>
+                              📅 {report.salaryDetails.experienceYears}{" "}
+                              {t("yearsExperience")}
+                            </p>
                           )}
                         </div>
                       )}
