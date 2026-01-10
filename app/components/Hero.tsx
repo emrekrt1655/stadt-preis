@@ -1,64 +1,39 @@
 "use client";
 
-import { useStates } from "@/hooks/useStates";
-import { useCountries } from "@/hooks/useCountries";
-import { useParams } from "next/navigation";
-import { useSelectedCountry } from "@/hooks/useSelectedCountry";
-import { Loader2, AlertCircle } from "lucide-react";
-import GermanyMap from "./GermanyMap";
-import StateInfoPanel from "./InfoPanel";
-import { toast } from "sonner";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/app/components/ui/card";
+import { Alert, AlertTitle } from "@/app/components/ui/alert";
+import { Lightbulb, MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Hero() {
-  const params = useParams();
-  const locale = params.locale as string;
-
-  const {
-    data: countries,
-    isLoading: isCountriesLoading,
-    isError: isCountriesError,
-  } = useCountries(locale);
-
-  const { selectedCountryCode } = useSelectedCountry(countries || []);
-
-  const {
-    data: states,
-    isLoading: isStatesLoading,
-    isError: isStatesError,
-  } = useStates(selectedCountryCode, locale);
-
-  if (isStatesLoading || isCountriesLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-75">
-        <Loader2 className="animate-spin text-primary w-8 h-8" />
-      </div>
-    );
-  }
-
-  if (isStatesError || isCountriesError) {
-    toast.error("Failed to load data");
-    return (
-      <div className="flex flex-col items-center justify-center min-h-75 text-red-600">
-        <AlertCircle className="w-8 h-8 mb-2" />
-      </div>
-    );
-  }
-
-  if (states?.length === 0) {
-    toast.error("No states found for the selected country");
-    return null;
-  }
+  const t = useTranslations("hero");
 
   return (
-    <section className="space-y-10">
-      <div className="flex flex-col lg:flex-row gap-6 items-start justify-between">
-        <div className="flex-1 w-full">
-          <StateInfoPanel />
+    <Card className="w-full max-w-4xl mx-auto ml-6 mt-6 p-4 shadow-md">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold flex items-center gap-2">
+          <MapPin className="w-5 h-5 text-primary" />
+          {t("title")}
+        </CardTitle>
+      </CardHeader>
+
+      <CardContent className="space-y-5">
+        <Alert className="bg-blue-50 border-blue-200 text-blue-800">
+          <Lightbulb className="h-4 w-4 text-blue-600" />
+          <AlertTitle>{t("subtitle")}</AlertTitle>
+        </Alert>
+
+        <div className="space-y-3 text-sm text-muted-foreground">
+          <p>🗺️ {t("points.0")}</p>
+          <p>🏙️ {t("points.1")}</p>
+          <p>📈 {t("points.2")}</p>
         </div>
-        <div className="flex-1 w-full">
-          <GermanyMap locale={locale} states={states!} />
-        </div>
-      </div>
-    </section>
+      </CardContent>
+    </Card>
   );
 }

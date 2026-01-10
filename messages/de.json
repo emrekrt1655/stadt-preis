@@ -8,6 +8,11 @@
       "📈 Vergleichen Sie Lebenshaltungskosten zwischen Städten und erkennen Sie Trends."
     ]
   },
+  "searchStates": {
+    "title": "Suche deutsche Bundesländer",
+    "placeholder": "Bundesländer suchen...",
+    "noResults": "Keine Bundesländer gefunden"
+  },
   "stateInfo": {
     "title": "Deutschland Kartenführer",
     "howItWorks": "So funktioniert es",
@@ -17,6 +22,9 @@
       "🏙️ Sehen Sie sich reale und anonyme Preisdaten auf der Stadtdetailseite an.",
       "📈 Teilen Sie Ihre eigenen Preisdaten anonym."
     ]
+  },
+  "popularState": {
+    "title": "Beliebte Bundesländer"
   },
   "stateDetail": {
     "title": "Bundesstaat Details",
