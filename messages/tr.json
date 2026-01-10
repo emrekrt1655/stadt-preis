@@ -62,5 +62,10 @@
     "noDataSalary": "Henüz maaş verisi yok. İlk ekleyen siz olun!",
     "rooms": "oda",
     "yearsExperience": "yıl deneyim"
+  },
+  "MapCountInfo": {
+    "noData": "Veri yok",
+    "hasData": "Veri mevcut",
+    "loading": "Yükleniyor..."
   }
 }

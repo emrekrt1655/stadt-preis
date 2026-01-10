@@ -10,29 +10,17 @@ import { State } from "@/types/State";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { useStateDataCounts } from "@/hooks/useStateDataCounts";
+import MapCountInfo from "./MapCountInfo";
 
 type GermanyMapProps = {
   states: State[];
   locale: string;
 };
 
-type Feature = {
-  type: "Feature";
-  id: string | number;
-  properties: {
-    NAME_1: string;
-    ID_1?: number;
-  };
-  geometry: {
-    type: "Polygon" | "MultiPolygon";
-    coordinates: number[][][][] | number[][][];
-  };
-};
-
-export default function GermanyMap({ states, locale }: GermanyMapProps) {
+export default function GermanyMap({ states }: GermanyMapProps) {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1] || "en";
-  const [features, setFeatures] = useState<Feature[]>([]);
+  const [features, setFeatures] = useState<StateFeature[]>([]);
   const [error, setError] = useState(false);
   const router = useRouter();
   const { setSelectedStateId } = useSelectedState();
@@ -54,8 +42,6 @@ export default function GermanyMap({ states, locale }: GermanyMapProps) {
       stateIds,
       enabled: stateIds.length > 0,
     });
-
-  console.log("State Data Map:", stateDataMap);
 
   const getStateColor = (stateId: string) => {
     const count = stateDataMap[stateId] || 0;
@@ -94,6 +80,7 @@ export default function GermanyMap({ states, locale }: GermanyMapProps) {
 
   return (
     <Card className="w-full max-w-4xl mx-auto mt-6 p-4 shadow-md">
+      <MapCountInfo isLoadingCounts={isLoadingCounts} />
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto">
         {features.map((feature, i) => {
           const d = path(feature as any);

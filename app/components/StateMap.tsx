@@ -6,41 +6,21 @@ import { Card } from "@/app/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useCityDataCounts } from "@/hooks/useCityDataCounts";
-
-type Feature = {
-  type: "Feature";
-  id: string | number;
-  properties: {
-    RS?: string;
-    AGS?: string;
-    GEN?: string;
-    BEZ?: string;
-    destatis?: {
-      population?: number;
-      area?: number;
-      [key: string]: any;
-    };
-    [key: string]: any;
-  };
-  geometry: {
-    type: "Polygon" | "MultiPolygon";
-    coordinates: number[][][][] | number[][][];
-  };
-};
+import MapCountInfo from "./MapCountInfo";
+import { CityFeature } from "@/types/CityFeature";
 
 interface StateMapProps {
-  selectedFeature?: Feature | null;
+  selectedFeature?: CityFeature | null;
 }
 
 export default function StateMap({ selectedFeature }: StateMapProps) {
   const router = useRouter();
-  const [features, setFeatures] = useState<Feature[]>([]);
+  const [features, setFeatures] = useState<CityFeature[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const params = useParams();
   const stateId = params.stateId as string;
 
-  // GeoJSON'dan city ID'lerini çıkar
   const cityIds = useMemo(
     () =>
       features
@@ -49,7 +29,6 @@ export default function StateMap({ selectedFeature }: StateMapProps) {
     [features]
   );
 
-  // City data counts hook'unu kullan
   const { data: cityDataMap = {}, isLoading: isLoadingCounts } =
     useCityDataCounts({
       cityIds,
@@ -75,14 +54,14 @@ export default function StateMap({ selectedFeature }: StateMapProps) {
       .finally(() => setLoading(false));
   }, [stateId]);
 
-  const handleCityClick = (feature: Feature) => {
+  const handleCityClick = (feature: CityFeature) => {
     const cityId = feature.properties.RS || feature.properties.AGS;
     if (cityId) {
       router.push(`/cities/${cityId}`);
     }
   };
 
-  const getCityColor = (feature: Feature, isSelected: boolean) => {
+  const getCityColor = (feature: CityFeature, isSelected: boolean) => {
     if (isSelected) return "fill-blue-500";
 
     const cityId = feature.properties.RS || feature.properties.AGS;
@@ -95,7 +74,7 @@ export default function StateMap({ selectedFeature }: StateMapProps) {
     return "fill-slate-100";
   };
 
-  const getHoverColor = (feature: Feature, isSelected: boolean) => {
+  const getHoverColor = (feature: CityFeature, isSelected: boolean) => {
     if (isSelected) return "fill-blue-500";
 
     const cityId = feature.properties.RS || feature.properties.AGS;
@@ -126,41 +105,22 @@ export default function StateMap({ selectedFeature }: StateMapProps) {
 
   const width = 700;
   const height = 800;
-  const projection = d3
-    .geoMercator()
-    .fitExtent(
-      [
-        [10, 10],
-        [width - 10, height - 10],
-      ],
-      {
-        type: "FeatureCollection",
-        features: features as any,
-      }
-    );
+  const projection = d3.geoMercator().fitExtent(
+    [
+      [10, 10],
+      [width - 10, height - 10],
+    ],
+    {
+      type: "FeatureCollection",
+      features: features as any,
+    }
+  );
 
   const path = d3.geoPath().projection(projection);
 
   return (
     <Card className="w-full max-w-4xl mx-auto mt-6 p-4 shadow-md">
-      {/* Legend */}
-      <div className="flex gap-4 mb-4 text-sm">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-slate-100 border border-gray-500"></div>
-          <span>No data</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-200 border border-gray-500"></div>
-          <span>Has price data</span>
-        </div>
-        {isLoadingCounts && (
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Loader2 className="w-3 h-3 animate-spin" />
-            <span>Loading data...</span>
-          </div>
-        )}
-      </div>
-
+      <MapCountInfo isLoadingCounts={isLoadingCounts} />
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto">
         {features.map((feature, i) => {
           const d = path(feature as any);
