@@ -3,26 +3,37 @@
 import { useEffect, useMemo, useState } from "react";
 import * as d3 from "d3-geo";
 import { Card } from "@/app/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSelectedState } from "@/hooks/useSelectedState";
-import { State } from "@/types/State";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { useStateDataCounts } from "@/hooks/useStateDataCounts";
 import MapCountInfo from "./MapCountInfo";
+import { useStates } from "@/hooks/useStates";
+import { useCountries } from "@/hooks/useCountries";
+import { useSelectedCountry } from "@/hooks/useSelectedCountry";
 
-type GermanyMapProps = {
-  states: State[];
-  locale: string;
-};
-
-export default function GermanyMap({ states }: GermanyMapProps) {
+export default function CalltoAction() {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1] || "en";
   const [features, setFeatures] = useState<StateFeature[]>([]);
   const [error, setError] = useState(false);
   const router = useRouter();
+  const {
+    data: countries,
+    isLoading: isCountriesLoading,
+    isError: isCountriesError,
+  } = useCountries(currentLocale);
+
+  const { selectedCountryCode } = useSelectedCountry(countries || []);
+
+  const {
+    data: states = [],
+    isLoading: isStatesLoading,
+    isError: isStatesError,
+  } = useStates(selectedCountryCode, currentLocale);
+
   const { setSelectedStateId } = useSelectedState();
 
   const stateIds = useMemo(
@@ -77,6 +88,28 @@ export default function GermanyMap({ states }: GermanyMapProps) {
     setSelectedStateId(stateId);
     router.push(`/${currentLocale}/${stateId}`);
   };
+
+  if (isStatesLoading || isCountriesLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-75">
+        <Loader2 className="animate-spin text-primary w-8 h-8" />
+      </div>
+    );
+  }
+
+  if (isStatesError || isCountriesError) {
+    toast.error("Failed to load data");
+    return (
+      <div className="flex flex-col items-center justify-center min-h-75 text-red-600">
+        <AlertCircle className="w-8 h-8 mb-2" />
+      </div>
+    );
+  }
+
+  if (states?.length === 0) {
+    toast.error("No states found for the selected country");
+    return null;
+  }
 
   return (
     <Card className="w-full max-w-4xl mx-auto mt-6 p-4 shadow-md">
