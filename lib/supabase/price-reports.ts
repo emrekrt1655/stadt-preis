@@ -1,9 +1,9 @@
-// lib/supabase/price-reports.ts
 import { supabase } from "./client";
-import { PriceReport, PriceCategory } from "@/types/PriceReports";
+import { PriceCategory } from "@/types/PriceReports";
 
 export async function createPriceReport(
   cityId: string,
+  stateId: string,
   category: PriceCategory,
   data: any
 ) {
@@ -11,6 +11,7 @@ export async function createPriceReport(
     .from("price_reports")
     .insert({
       city_id: cityId,
+      state_id: stateId,
       category,
       price: data.price,
       currency: data.currency || "EUR",
@@ -60,6 +61,33 @@ export async function getPriceReportsByCity(
     `
     )
     .eq("city_id", cityId)
+    .order("created_at", { ascending: false });
+
+  if (category) {
+    query = query.eq("category", category);
+  }
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+  return data;
+}
+
+export async function getPriceReportsByState(
+  stateId: string,
+  category?: PriceCategory
+) {
+  let query = supabase
+    .from("price_reports")
+    .select(
+      `
+      *,
+      rent_details(*),
+      beverage_details(*),
+      salary_details(*)
+    `
+    )
+    .eq("state_id", stateId)
     .order("created_at", { ascending: false });
 
   if (category) {

@@ -10,6 +10,7 @@ import {
   createPriceReport,
   getPriceReportsByCity,
   getAveragePrices,
+  getPriceReportsByState,
 } from "@/lib/supabase/price-reports";
 import { toast } from "sonner";
 import { PriceReport, PriceCategory } from "@/types/PriceReports";
@@ -38,6 +39,29 @@ export const usePriceReportsByCity = (
       }
     },
     enabled: !!cityId,
+    ...baseQueryOptions,
+  });
+};
+
+export const usePriceReportsByState = (
+  stateId: string,
+  category?: PriceCategory
+): UseQueryResult<PriceReport[], Error> => {
+  return useQuery<PriceReport[], Error>({
+    queryKey: ["priceReportsByState", stateId, category],
+    queryFn: async () => {
+      try {
+        return await getPriceReportsByState(stateId, category);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Failed to load price reports by state";
+        toast.error(errorMessage);
+        throw error;
+      }
+    },
+    enabled: !!stateId,
     ...baseQueryOptions,
   });
 };
@@ -74,14 +98,16 @@ export const useCreatePriceReport = () => {
   return useMutation({
     mutationFn: async ({
       cityId,
+      stateId,
       category,
       data,
     }: {
       cityId: string;
+      stateId: string;
       category: PriceCategory;
       data: any;
     }) => {
-      return await createPriceReport(cityId, category, data);
+      return await createPriceReport(cityId, stateId, category, data);
     },
     onSuccess: (_, variables) => {
       // Invalidate related queries

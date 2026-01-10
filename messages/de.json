@@ -63,5 +63,10 @@
     "noDataSalary": "Noch keine Gehaltsdaten verfügbar. Seien Sie der Erste!",
     "rooms": "Zimmer",
     "yearsExperience": "Jahre Erfahrung"
+  },
+  "MapCountInfo": {
+    "noData": "Keine Daten verfügbar",
+    "hasData": "Daten verfügbar",
+    "loading": "Lade Daten..."
   }
 }

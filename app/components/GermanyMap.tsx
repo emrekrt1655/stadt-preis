@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import * as d3 from "d3-geo";
 import { Card } from "@/app/components/ui/card";
 import { Loader2 } from "lucide-react";
@@ -9,32 +9,26 @@ import { useSelectedState } from "@/hooks/useSelectedState";
 import { State } from "@/types/State";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
+import { useStateDataCounts } from "@/hooks/useStateDataCounts";
+import MapCountInfo from "./MapCountInfo";
 
 type GermanyMapProps = {
   states: State[];
   locale: string;
 };
 
-type Feature = {
-  type: "Feature";
-  id: string | number;
-  properties: {
-    NAME_1: string;
-    ID_1?: number;
-  };
-  geometry: {
-    type: "Polygon" | "MultiPolygon";
-    coordinates: number[][][][] | number[][][];
-  };
-};
-
-export default function GermanyMap({ states, locale }: GermanyMapProps) {
+export default function GermanyMap({ states }: GermanyMapProps) {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1] || "en";
-  const [features, setFeatures] = useState<Feature[]>([]);
+  const [features, setFeatures] = useState<StateFeature[]>([]);
   const [error, setError] = useState(false);
   const router = useRouter();
   const { setSelectedStateId } = useSelectedState();
+
+  const stateIds = useMemo(
+    () => features.map((f) => f.id).filter(Boolean) as string[],
+    [features]
+  );
 
   useEffect(() => {
     fetch("/states.geojson")
@@ -42,6 +36,20 @@ export default function GermanyMap({ states, locale }: GermanyMapProps) {
       .then((data) => setFeatures(data.features))
       .catch(() => setError(true));
   }, []);
+
+  const { data: stateDataMap = {}, isLoading: isLoadingCounts } =
+    useStateDataCounts({
+      stateIds,
+      enabled: stateIds.length > 0,
+    });
+
+  const getStateColor = (stateId: string) => {
+    const count = stateDataMap[stateId] || 0;
+    if (count > 0) {
+      return "fill-green-200";
+    }
+    return "fill-slate-100";
+  };
 
   if (error) {
     toast.error("Failed to load map data");
@@ -72,6 +80,7 @@ export default function GermanyMap({ states, locale }: GermanyMapProps) {
 
   return (
     <Card className="w-full max-w-4xl mx-auto mt-6 p-4 shadow-md">
+      <MapCountInfo isLoadingCounts={isLoadingCounts} />
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto">
         {features.map((feature, i) => {
           const d = path(feature as any);
@@ -104,7 +113,9 @@ export default function GermanyMap({ states, locale }: GermanyMapProps) {
             >
               <path
                 d={d}
-                className="fill-slate-100 stroke-gray-500 hover:fill-blue-400 hover:stroke-blue-600 transition-all duration-200"
+                className={`${getStateColor(
+                  stateId
+                )} stroke-gray-500 hover:fill-blue-400 hover:stroke-blue-600 transition-all duration-200`}
               >
                 <title>
                   {stateName} | {code}

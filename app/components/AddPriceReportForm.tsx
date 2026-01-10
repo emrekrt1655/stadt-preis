@@ -26,11 +26,13 @@ import { Plus } from "lucide-react";
 
 interface AddPriceReportFormProps {
   cityId: string;
+  stateId: string;
   defaultCategory?: PriceCategory;
 }
 
 export default function AddPriceReportForm({
   cityId,
+  stateId,
   defaultCategory = "rent",
 }: AddPriceReportFormProps) {
   const [open, setOpen] = useState(false);
@@ -104,6 +106,7 @@ export default function AddPriceReportForm({
     createReport.mutate(
       {
         cityId,
+        stateId,
         category,
         data: { ...baseData, ...categoryData },
       },

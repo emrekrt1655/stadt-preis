@@ -63,5 +63,10 @@
     "noDataSalary": "No salary data available yet. Be the first to add!",
     "rooms": "rooms",
     "yearsExperience": "years experience"
+  },
+  "MapCountInfo": {
+    "noData": "Keine Daten verfügbar",
+    "hasData": "Daten verfügbar",
+    "loading": "Lade Daten..."
   }
 }
