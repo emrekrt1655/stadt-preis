@@ -8,6 +8,11 @@
       "📈 Compare living costs across German cities and track trends."
     ]
   },
+  "searchStates": {
+    "title": "Search German States",
+    "placeholder": "Search states...",
+    "noResults": "No states found"
+  },
   "stateInfo": {
     "title": "Germany Map Guide",
     "howItWorks": "How it works",
@@ -17,6 +22,9 @@
       "🏙️ View real and anonymous price data on the city detail page.",
       "📈 Share your own price data anonymously."
     ]
+  },
+  "popularState": {
+    "title": "Popular States"
   },
   "stateDetail": {
     "title": "State Details",

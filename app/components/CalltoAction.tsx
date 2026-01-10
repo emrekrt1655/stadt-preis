@@ -86,7 +86,7 @@ export default function CalltoAction() {
 
   const handleStateClick = (stateId: string) => {
     setSelectedStateId(stateId);
-    router.push(`/${currentLocale}/${stateId}`);
+    router.push(`/states/${stateId}`);
   };
 
   if (isStatesLoading || isCountriesLoading) {

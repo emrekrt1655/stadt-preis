@@ -8,6 +8,11 @@
       "📈 Şehirler arası fiyat farklarını keşfedin ve trendleri görün."
     ]
   },
+  "searchStates": {
+    "title": "Eyaletleri Ara",
+    "placeholder": "Eyaletleri ara...",
+    "noResults": "Eyalet bulunamadı"
+  },
   "stateInfo": {
     "title": "Almanya Harita Rehberi",
     "howItWorks": "Nasıl çalışır?",
@@ -16,6 +21,9 @@
       "🏙️ Şehir detay sayfasında fiyat verilerini inceleyin.",
       "📈 Kendi fiyat verinizi anonim olarak paylaşabilirsiniz."
     ]
+  },
+  "popularState": {
+    "title": "Popüler Eyaletler"
   },
   "stateDetail": {
     "title": "Eyalet Detayları",

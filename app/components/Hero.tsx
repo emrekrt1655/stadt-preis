@@ -14,7 +14,7 @@ export default function Hero() {
   const t = useTranslations("hero");
 
   return (
-    <Card className="w-full max-w-4xl mx-auto mt-6 p-4 shadow-md">
+    <Card className="w-full max-w-4xl mx-auto ml-6 mt-6 p-4 shadow-md">
       <CardHeader>
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
           <MapPin className="w-5 h-5 text-primary" />
