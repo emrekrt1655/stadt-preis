@@ -1,9 +1,9 @@
-// types/PriceReport.ts - Güncellenmiş versiyon
 export type PriceCategory = "rent" | "beer" | "cappuccino" | "salary";
 
 export interface BasePriceReport {
   id: string;
   cityId: string;
+  stateId: string;
   category: PriceCategory;
   price: number;
   currency: string;
@@ -72,7 +72,6 @@ export type PriceReport =
   | CappuccinoReport
   | SalaryReport;
 
-// Type guards
 export function isRentReport(report: PriceReport): report is RentReport {
   return report.category === "rent";
 }
