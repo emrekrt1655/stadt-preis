@@ -13,7 +13,7 @@ export const useStateDataCounts = ({
 }: UseStateDataCountsParams) =>
   useDataCounts({
     ids: stateIds,
-    tableName: "price_reports",
+    tableName: "price_records",
     columnName: "state_id",
     enabled,
   });
