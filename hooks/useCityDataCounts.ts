@@ -15,7 +15,7 @@ export const useCityDataCounts = ({
 }: UseCityDataCountsParams) =>
   useDataCounts({
     ids: cityIds,
-    tableName: "price_reports",
+    tableName: "price_records",
     columnName: "city_id",
     enabled,
   });

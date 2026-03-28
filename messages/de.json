@@ -54,23 +54,52 @@
     },
     "categories": {
       "rent": "Miete",
-      "beer": "Bier",
+      "doener": "Döner",
       "cappuccino": "Cappuccino",
       "salary": "Gehalt"
     },
     "rentStatistics": "Mietstatistiken",
-    "beerStatistics": "Bierpreis-Statistiken",
+    "doenerStatistics": "Döner-Preis-Statistiken",
     "cappuccinoStatistics": "Cappuccino-Preis-Statistiken",
     "salaryStatistics": "Gehaltsstatistiken",
     "average": "Durchschnitt",
     "minMax": "Min - Max",
     "reportsCount": "Berichte",
     "noDataRent": "Noch keine Mietdaten verfügbar. Seien Sie der Erste!",
-    "noDataBeer": "Noch keine Bierpreise verfügbar. Seien Sie der Erste!",
+    "noDataDoener": "Noch keine Dönerpreise verfügbar. Seien Sie der Erste!",
     "noDataCappuccino": "Noch keine Cappuccino-Preise verfügbar. Seien Sie der Erste!",
     "noDataSalary": "Noch keine Gehaltsdaten verfügbar. Seien Sie der Erste!",
+    "rentTypes": {
+      "warm": "Warmmiete",
+      "kalt": "Kaltmiete"
+    },
     "rooms": "Zimmer",
     "yearsExperience": "Jahre Erfahrung"
+  },
+  "AddPriceReportForm": {
+    "addReport": "Bericht hinzufügen",
+    "title": "Preisbericht hinzufügen",
+    "description": "Tragen Sie anonym Preisdaten für diese Stadt bei.",
+    "category": "Kategorie",
+    "categories": {
+      "rent": "Miete",
+      "doener": "Döner",
+      "cappuccino": "Cappuccino",
+      "salary": "Gehalt"
+    },
+    "price": "Preis (€)",
+    "salary": "Gehalt (€/Jahr)",
+    "rentType": "Miettyp",
+    "rentTypeWarm": "Warmmiete",
+    "rentTypeCold": "Kaltmiete",
+    "roomCount": "Zimmeranzahl",
+    "restaurantName": "Restaurantname",
+    "size": "Größe",
+    "jobTitle": "Berufsbezeichnung",
+    "salaryGross": "Bruttogehalt (€/Jahr)",
+    "cancel": "Abbrechen",
+    "submit": "Einreichen",
+    "submitting": "Wird eingereicht..."
   },
   "MapCountInfo": {
     "noData": "Keine Daten verfügbar",
