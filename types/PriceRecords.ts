@@ -41,22 +41,22 @@ export interface SalaryDetails {
 
 export interface RentRecord extends BasePriceRecord {
   category: "rent";
-  rent_prices?: RentDetails;
+  rent_prices?: RentDetails[];
 }
 
 export interface CappuccinoRecord extends BasePriceRecord {
   category: "cappuccino";
-  cappuccino_prices?: CappuccinoDetails;
+  cappuccino_prices?: CappuccinoDetails[];
 }
 
 export interface DoenerRecord extends BasePriceRecord {
   category: "doener";
-  doener_prices?: DoenerDetails;
+  doener_prices?: DoenerDetails[];
 }
 
 export interface SalaryRecord extends BasePriceRecord {
   category: "salary";
-  salary_prices?: SalaryDetails;
+  salary_prices?: SalaryDetails[];
 }
 
 export type PriceRecord =
@@ -125,3 +125,4 @@ export function isSalaryReport(report: PriceRecord): report is SalaryRecord {
 export function isDoenerReport(report: PriceRecord): report is DoenerRecord {
   return report.category === "doener";
 }
+

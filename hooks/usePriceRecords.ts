@@ -134,12 +134,9 @@ export const useCreatePriceRecord = () => {
       toast.success("Price record submitted successfully!");
     },
     onError: (error) => {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Failed to submit price record";
-      toast.error(errorMessage);
-    },
+  console.error("Full error:", error);
+  toast.error(error instanceof Error ? error.message : "Failed to submit price record");
+},
   });
 };
 
