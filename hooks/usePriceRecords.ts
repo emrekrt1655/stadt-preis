@@ -7,13 +7,17 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import {
-  createPriceReport,
-  getPriceReportsByCity,
+  createPriceRecord,
+  getPriceRecordsByCity,
   getAveragePrices,
-  getPriceReportsByState,
-} from "@/lib/supabase/price-reports";
+  getPriceRecordsByState,
+} from "@/lib/supabase/price-records";
 import { toast } from "sonner";
-import { PriceReport, PriceCategory } from "@/types/PriceReports";
+import {
+  PriceRecord,
+  PriceCategory,
+  CreatePriceRecordInput,
+} from "@/types/PriceRecords";
 
 const baseQueryOptions = {
   retry: 1,
@@ -22,18 +26,18 @@ const baseQueryOptions = {
 
 export const usePriceReportsByCity = (
   cityId: string,
-  category?: PriceCategory
-): UseQueryResult<PriceReport[], Error> => {
-  return useQuery<PriceReport[], Error>({
-    queryKey: ["priceReports", cityId, category],
+  category?: PriceCategory,
+): UseQueryResult<PriceRecord[], Error> => {
+  return useQuery<PriceRecord[], Error>({
+    queryKey: ["priceRecords", cityId, category],
     queryFn: async () => {
       try {
-        return await getPriceReportsByCity(cityId, category);
+        return await getPriceRecordsByCity(cityId, category);
       } catch (error) {
         const errorMessage =
           error instanceof Error
             ? error.message
-            : "Failed to load price reports";
+            : "Failed to load price records by city";
         toast.error(errorMessage);
         throw error;
       }
@@ -43,20 +47,20 @@ export const usePriceReportsByCity = (
   });
 };
 
-export const usePriceReportsByState = (
+export const usePriceRecordsByState = (
   stateId: string,
-  category?: PriceCategory
-): UseQueryResult<PriceReport[], Error> => {
-  return useQuery<PriceReport[], Error>({
-    queryKey: ["priceReportsByState", stateId, category],
+  category?: PriceCategory,
+): UseQueryResult<PriceRecord[], Error> => {
+  return useQuery<PriceRecord[], Error>({
+    queryKey: ["priceRecordsByState", stateId, category],
     queryFn: async () => {
       try {
-        return await getPriceReportsByState(stateId, category);
+        return await getPriceRecordsByState(stateId, category);
       } catch (error) {
         const errorMessage =
           error instanceof Error
             ? error.message
-            : "Failed to load price reports by state";
+            : "Failed to load price records by state";
         toast.error(errorMessage);
         throw error;
       }
@@ -68,7 +72,7 @@ export const usePriceReportsByState = (
 
 export const useAveragePrices = (
   cityId: string,
-  category: PriceCategory
+  category: PriceCategory,
 ): UseQueryResult<
   { average: number; min: number; max: number; count: number } | null,
   Error
@@ -92,38 +96,48 @@ export const useAveragePrices = (
   });
 };
 
-export const useCreatePriceReport = () => {
+export const useCreatePriceRecord = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
       cityId,
       stateId,
+      countryId,
       category,
       data,
     }: {
       cityId: string;
       stateId: string;
+      countryId: string;
       category: PriceCategory;
-      data: any;
+      data: CreatePriceRecordInput;
     }) => {
-      return await createPriceReport(cityId, stateId, category, data);
+      return await createPriceRecord(
+        cityId,
+        stateId,
+        countryId,
+        category,
+        data,
+      );
     },
     onSuccess: (_, variables) => {
-      // Invalidate related queries
       queryClient.invalidateQueries({
-        queryKey: ["priceReports", variables.cityId],
+        queryKey: ["priceRecords", variables.cityId],
       });
       queryClient.invalidateQueries({
         queryKey: ["averagePrices", variables.cityId, variables.category],
       });
-      toast.success("Price report submitted successfully!");
+      queryClient.invalidateQueries({
+        queryKey: ["priceCategoryCounts", variables.cityId],
+      });
+      toast.success("Price record submitted successfully!");
     },
     onError: (error) => {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Failed to submit price report";
+          : "Failed to submit price record";
       toast.error(errorMessage);
     },
   });
@@ -136,15 +150,15 @@ export const usePriceCategoryCounts = (cityId: string) => {
       try {
         const categories: PriceCategory[] = [
           "rent",
-          "beer",
+          "doener",
           "cappuccino",
           "salary",
         ];
         const counts = await Promise.all(
           categories.map(async (category) => {
-            const data = await getPriceReportsByCity(cityId, category);
+            const data = await getPriceRecordsByCity(cityId, category);
             return { category, count: data.length };
-          })
+          }),
         );
         return counts;
       } catch (error) {
