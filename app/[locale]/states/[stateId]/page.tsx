@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import StateMap from "@/app/components/StateMap";
 import { Card } from "@/app/components/ui/card";
 import { Loader2, Search, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useStateById } from "@/hooks/useStates";
 
 type StateData = {
   totalPopulation: number;
@@ -34,7 +35,8 @@ export default function StateDetailPage() {
   const params = useParams();
   const stateId = params.stateId as string;
   const t = useTranslations("stateDetail");
-
+const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1] || "en";
   const [stateData, setStateData] = useState<StateData | null>(null);
   const [loading, setLoading] = useState(true);
   const [allFeatures, setAllFeatures] = useState<Feature[]>([]);
@@ -42,6 +44,8 @@ export default function StateDetailPage() {
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
   const [suggestions, setSuggestions] = useState<Feature[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const { data: state, isLoading: stateLoading, error: stateError } = useStateById(stateId, currentLocale);
+
 
   useEffect(() => {
     if (!stateId) return;
@@ -109,6 +113,7 @@ export default function StateDetailPage() {
     setShowSuggestions(false);
   };
 
+  console.log("State Data:", state);
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -119,7 +124,7 @@ export default function StateDetailPage() {
               <h2 className="text-xl font-semibold mb-4 text-gray-900">
                 {t("title")}
               </h2>
-              <p className="text-sm text-gray-600">{t("subtitle")}</p>
+              <p className="text-sm text-gray-600">{t("subtitle")} {state?.name} </p>
             </Card>
 
             {/* Şehir Arama Alanı */}
