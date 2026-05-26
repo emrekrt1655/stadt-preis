@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "Almanya’daki fiyatları şehir bazlı inceleyin",
+    "title": "Almanya'daki fiyatları şehir bazlı inceleyin",
     "subtitle": "Her şehirdeki yaşam ve ürün fiyatlarını görüntüleyin, anonim olarak kendi verinizi paylaşın.",
     "points": [
       "💡 Gerçek kullanıcı verileriyle ortalama fiyatları öğrenin.",
@@ -16,6 +16,7 @@
   "stateInfo": {
     "title": "Almanya Harita Rehberi",
     "howItWorks": "Nasıl çalışır?",
+    "description": "Devam etmek için haritadan bir eyalet seçin. Eyaletin şehir haritası açılacak, fiyat verilerini görüntüleyebilir veya anonim olarak yeni kayıt ekleyebilirsiniz.",
     "steps": [
       "🗺️ Haritaya tıklayarak eyalet seçin.",
       "🏙️ Şehir detay sayfasında fiyat verilerini inceleyin.",
@@ -53,23 +54,52 @@
     },
     "categories": {
       "rent": "Kira",
-      "beer": "Bira",
+      "doener": "Döner",
       "cappuccino": "Cappuccino",
       "salary": "Maaş"
     },
     "rentStatistics": "Kira İstatistikleri",
-    "beerStatistics": "Bira Fiyat İstatistikleri",
+    "doenerStatistics": "Döner Fiyat İstatistikleri",
     "cappuccinoStatistics": "Cappuccino Fiyat İstatistikleri",
     "salaryStatistics": "Maaş İstatistikleri",
     "average": "Ortalama",
     "minMax": "Min - Maks",
     "reportsCount": "Raporlar",
     "noDataRent": "Henüz kira verisi yok. İlk ekleyen siz olun!",
-    "noDataBeer": "Henüz bira fiyatı verisi yok. İlk ekleyen siz olun!",
+    "noDataDoener": "Henüz döner fiyatı verisi yok. İlk ekleyen siz olun!",
     "noDataCappuccino": "Henüz cappuccino fiyatı verisi yok. İlk ekleyen siz olun!",
     "noDataSalary": "Henüz maaş verisi yok. İlk ekleyen siz olun!",
+    "rentTypes": {
+      "warm": "Sıcak kira",
+      "kalt": "Soğuk kira"
+    },
     "rooms": "oda",
     "yearsExperience": "yıl deneyim"
+  },
+  "AddPriceReportForm": {
+    "addReport": "Rapor Ekle",
+    "title": "Fiyat Raporu Ekle",
+    "description": "Bu şehir için fiyat verilerini anonim olarak paylaşın.",
+    "category": "Kategori",
+    "categories": {
+      "rent": "Kira",
+      "doener": "Döner",
+      "cappuccino": "Cappuccino",
+      "salary": "Maaş"
+    },
+    "price": "Fiyat (€)",
+    "salary": "Maaş (€/yıl)",
+    "rentType": "Kira Türü",
+    "rentTypeWarm": "Sıcak kira",
+    "rentTypeCold": "Soğuk kira",
+    "roomCount": "Oda Sayısı",
+    "restaurantName": "Restoran Adı",
+    "size": "Boyut",
+    "jobTitle": "İş Unvanı",
+    "salaryGross": "Brüt Maaş (€/yıl)",
+    "cancel": "İptal",
+    "submit": "Gönder",
+    "submitting": "Gönderiliyor..."
   },
   "MapCountInfo": {
     "noData": "Veri yok",

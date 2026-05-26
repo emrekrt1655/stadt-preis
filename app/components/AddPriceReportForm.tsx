@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useCreatePriceReport } from "@/hooks/usePriceReports";
-import { PriceCategory } from "@/types/PriceReports";
+import { useCreatePriceRecord } from "@/hooks/usePriceRecords";
+import { PriceCategory } from "@/types/PriceRecords";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
-import { Textarea } from "@/app/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -23,48 +22,51 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface AddPriceReportFormProps {
   cityId: string;
   stateId: string;
+  countryId: string;
   defaultCategory?: PriceCategory;
 }
 
 export default function AddPriceReportForm({
   cityId,
   stateId,
+  countryId,
   defaultCategory = "rent",
 }: AddPriceReportFormProps) {
+  const t = useTranslations("AddPriceReportForm");
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState<PriceCategory>(defaultCategory);
-  const createReport = useCreatePriceReport();
+  const createRecord = useCreatePriceRecord();
 
   const [formData, setFormData] = useState({
     price: "",
-    notes: "",
     // Rent
     rentType: "warm" as "warm" | "kalt",
     roomCount: "",
-    squareMeters: "",
-    neighborhood: "",
-    // Beverage
-    venueName: "",
-    beverageSize: "",
+    // Doener
+    restaurantName: "",
+    // Cappuccino
+    cappuccinoRestaurantName: "",
+    cappuccinoSize: "",
     // Salary
     salaryGross: "",
-    salaryPeriod: "yearly" as "yearly" | "monthly",
     jobTitle: "",
-    industry: "",
-    experienceYears: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!formData.price) {
+      return;
+    }
+
     const baseData = {
       price: parseFloat(formData.price),
       currency: "EUR",
-      notes: formData.notes || undefined,
     };
 
     let categoryData = {};
@@ -73,18 +75,22 @@ export default function AddPriceReportForm({
       categoryData = {
         rentDetails: {
           rentType: formData.rentType,
-          roomCount: formData.roomCount ? parseInt(formData.roomCount) : undefined,
-          squareMeters: formData.squareMeters
-            ? parseFloat(formData.squareMeters)
+          roomCount: formData.roomCount
+            ? parseInt(formData.roomCount)
             : undefined,
-          neighborhood: formData.neighborhood || undefined,
         },
       };
-    } else if (category === "beer" || category === "cappuccino") {
+    } else if (category === "doener") {
       categoryData = {
-        beverageDetails: {
-          venueName: formData.venueName || undefined,
-          beverageSize: formData.beverageSize || undefined,
+        doenerDetails: {
+          restaurantName: formData.restaurantName || undefined,
+        },
+      };
+    } else if (category === "cappuccino") {
+      categoryData = {
+        cappuccinoDetails: {
+          restaurantName: formData.cappuccinoRestaurantName || undefined,
+          size: formData.cappuccinoSize || undefined,
         },
       };
     } else if (category === "salary") {
@@ -93,44 +99,35 @@ export default function AddPriceReportForm({
           salaryGross: formData.salaryGross
             ? parseFloat(formData.salaryGross)
             : undefined,
-          salaryPeriod: formData.salaryPeriod,
           jobTitle: formData.jobTitle || undefined,
-          industry: formData.industry || undefined,
-          experienceYears: formData.experienceYears
-            ? parseInt(formData.experienceYears)
-            : undefined,
         },
       };
     }
 
-    createReport.mutate(
+    createRecord.mutate(
       {
         cityId,
         stateId,
+        countryId,
         category,
         data: { ...baseData, ...categoryData },
       },
       {
         onSuccess: () => {
           setOpen(false);
-          // Reset form
           setFormData({
             price: "",
-            notes: "",
             rentType: "warm",
             roomCount: "",
-            squareMeters: "",
-            neighborhood: "",
-            venueName: "",
-            beverageSize: "",
+            restaurantName: "",
+            cappuccinoRestaurantName: "",
+            cappuccinoSize: "",
             salaryGross: "",
-            salaryPeriod: "yearly",
             jobTitle: "",
-            industry: "",
-            experienceYears: "",
           });
+          setCategory(defaultCategory);
         },
-      }
+      },
     );
   };
 
@@ -138,26 +135,30 @@ export default function AddPriceReportForm({
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleRentTypeChange = (value: "warm" | "kalt") => {
+  setFormData((prev) => ({ ...prev, rentType: value }));
+  console.log("Rent type changed to:", value);
+};
+
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="w-4 h-4 mr-2" />
-          Add Price Report
+          {t("addReport")}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Add Price Report</DialogTitle>
-          <DialogDescription>
-            Share price information anonymously to help others.
-          </DialogDescription>
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Category Selection */}
           <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
+            <Label htmlFor="category">{t("category")}</Label>
             <Select
               value={category}
               onValueChange={(value) => setCategory(value as PriceCategory)}
@@ -166,10 +167,16 @@ export default function AddPriceReportForm({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="rent">🏠 Rent</SelectItem>
-                <SelectItem value="beer">🍺 Beer</SelectItem>
-                <SelectItem value="cappuccino">☕ Cappuccino</SelectItem>
-                <SelectItem value="salary">💼 Salary</SelectItem>
+                <SelectItem value="rent">🏠 {t("categories.rent")}</SelectItem>
+                <SelectItem value="doener">
+                  🍖 {t("categories.doener")}
+                </SelectItem>
+                <SelectItem value="cappuccino">
+                  ☕ {t("categories.cappuccino")}
+                </SelectItem>
+                <SelectItem value="salary">
+                  💼 {t("categories.salary")}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -177,7 +184,7 @@ export default function AddPriceReportForm({
           {/* Price / Salary */}
           <div className="space-y-2">
             <Label htmlFor="price">
-              {category === "salary" ? "Salary (€)" : "Price (€)"}{" "}
+              {category === "salary" ? t("salary") : t("price")}
               <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -191,34 +198,34 @@ export default function AddPriceReportForm({
                 category === "salary"
                   ? "e.g., 65000"
                   : category === "rent"
-                  ? "e.g., 1200.00"
-                  : "e.g., 4.50"
+                    ? "e.g., 1200.00"
+                    : "e.g., 4.50"
               }
             />
           </div>
 
-          {/* Category-specific fields */}
+          {/* Rent Fields */}
           {category === "rent" && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="rentType">Rent Type</Label>
+                  <Label htmlFor="rentType">{t("rentType")}</Label>
                   <Select
                     value={formData.rentType}
-                    onValueChange={(value) => handleChange("rentType", value)}
+                    onValueChange={handleRentTypeChange}
                   >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="warm">Warm (incl. utilities)</SelectItem>
-                      <SelectItem value="kalt">Kalt (excl. utilities)</SelectItem>
+                      <SelectItem value="warm">{t("rentTypeWarm")}</SelectItem>
+                      <SelectItem value="kalt">{t("rentTypeCold")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="roomCount">Number of Rooms</Label>
+                  <Label htmlFor="roomCount">{t("roomCount")}</Label>
                   <Input
                     id="roomCount"
                     type="number"
@@ -228,86 +235,62 @@ export default function AddPriceReportForm({
                   />
                 </div>
               </div>
+            </div>
+          )}
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="squareMeters">Square Meters</Label>
-                  <Input
-                    id="squareMeters"
-                    type="number"
-                    step="0.1"
-                    value={formData.squareMeters}
-                    onChange={(e) => handleChange("squareMeters", e.target.value)}
-                    placeholder="e.g., 85.5"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="neighborhood">Neighborhood</Label>
-                  <Input
-                    id="neighborhood"
-                    value={formData.neighborhood}
-                    onChange={(e) => handleChange("neighborhood", e.target.value)}
-                    placeholder="e.g., City Center"
-                  />
-                </div>
+          {/* Doener Fields */}
+          {category === "doener" && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="restaurantName">{t("restaurantName")}</Label>
+                <Input
+                  id="restaurantName"
+                  value={formData.restaurantName}
+                  onChange={(e) =>
+                    handleChange("restaurantName", e.target.value)
+                  }
+                  placeholder="e.g., Doner Palace"
+                />
               </div>
             </div>
           )}
 
-          {(category === "beer" || category === "cappuccino") && (
+          {/* Cappuccino Fields */}
+          {category === "cappuccino" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="venueName">Venue Name</Label>
+                <Label htmlFor="cappuccinoRestaurantName">
+                  {t("restaurantName")}
+                </Label>
                 <Input
-                  id="venueName"
-                  value={formData.venueName}
-                  onChange={(e) => handleChange("venueName", e.target.value)}
+                  id="cappuccinoRestaurantName"
+                  value={formData.cappuccinoRestaurantName}
+                  onChange={(e) =>
+                    handleChange("cappuccinoRestaurantName", e.target.value)
+                  }
                   placeholder="e.g., Café Central"
                 />
               </div>
 
-              {category === "beer" && (
-                <div className="space-y-2">
-                  <Label htmlFor="beverageSize">Size</Label>
-                  <Select
-                    value={formData.beverageSize}
-                    onValueChange={(value) => handleChange("beverageSize", value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0.3L">0.3L</SelectItem>
-                      <SelectItem value="0.4L">0.4L</SelectItem>
-                      <SelectItem value="0.5L">0.5L</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+              <div className="space-y-2">
+                <Label htmlFor="cappuccinoSize">{t("size")}</Label>
+                <Input
+                  id="cappuccinoSize"
+                  value={formData.cappuccinoSize}
+                  onChange={(e) =>
+                    handleChange("cappuccinoSize", e.target.value)
+                  }
+                  placeholder="e.g., Large, Medium"
+                />
+              </div>
             </div>
           )}
 
+          {/* Salary Fields */}
           {category === "salary" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="salaryPeriod">Period</Label>
-                <Select
-                  value={formData.salaryPeriod}
-                  onValueChange={(value) => handleChange("salaryPeriod", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="yearly">Yearly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="jobTitle">Job Title</Label>
+                <Label htmlFor="jobTitle">{t("jobTitle")}</Label>
                 <Input
                   id="jobTitle"
                   value={formData.jobTitle}
@@ -316,44 +299,19 @@ export default function AddPriceReportForm({
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="industry">Industry</Label>
-                  <Input
-                    id="industry"
-                    value={formData.industry}
-                    onChange={(e) => handleChange("industry", e.target.value)}
-                    placeholder="e.g., Technology"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="experienceYears">Years of Experience</Label>
-                  <Input
-                    id="experienceYears"
-                    type="number"
-                    value={formData.experienceYears}
-                    onChange={(e) =>
-                      handleChange("experienceYears", e.target.value)
-                    }
-                    placeholder="e.g., 5"
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="salaryGross">{t("salaryGross")}</Label>
+                <Input
+                  id="salaryGross"
+                  type="number"
+                  step="0.01"
+                  value={formData.salaryGross}
+                  onChange={(e) => handleChange("salaryGross", e.target.value)}
+                  placeholder="e.g., 65000"
+                />
               </div>
             </div>
           )}
-
-          {/* Notes */}
-          <div className="space-y-2">
-            <Label htmlFor="notes">Additional Notes (Optional)</Label>
-            <Textarea
-              id="notes"
-              value={formData.notes}
-              onChange={(e) => handleChange("notes", e.target.value)}
-              placeholder="Any additional information..."
-              rows={3}
-            />
-          </div>
 
           {/* Submit Button */}
           <div className="flex justify-end gap-3">
@@ -362,10 +320,10 @@ export default function AddPriceReportForm({
               variant="outline"
               onClick={() => setOpen(false)}
             >
-              Cancel
+              {t("cancel")}
             </Button>
-            <Button type="submit" disabled={createReport.isPending}>
-              {createReport.isPending ? "Submitting..." : "Submit Report"}
+            <Button type="submit" disabled={createRecord.isPending}>
+              {createRecord.isPending ? t("submitting") : t("submit")}
             </Button>
           </div>
         </form>
